@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Telegram Bot API Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <h1 class="text-xl font-bold">Go Telegram Bot API</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="border-b border-gray-200 pb-5">
+                <h2 class="text-3xl font-bold text-gray-900">Documentation</h2>
+                <p class="mt-2 text-gray-600">A comprehensive Go library for the Telegram Bot API</p>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 gap-8">
+                <!-- Installation -->
+                <section id="installation">
+                    <h3 class="text-2xl font-semibold text-gray-900">Installation</h3>
+                    <div class="mt-4 bg-gray-800 rounded-lg p-4">
+                        <pre><code class="language-bash">go get github.com/KazeDevID/gotelegrambot</code></pre>
+                    </div>
+                </section>
+
+                <!-- Quick Start -->
+                <section id="quickstart">
+                    <h3 class="text-2xl font-semibold text-gray-900">Quick Start</h3>
+                    <div class="mt-4 bg-gray-800 rounded-lg p-4">
+                        <pre><code class="language-go">package main
+
+import (
+    "context"
+    "log"
+    "os"
+    "github.com/KazeDevID/gotelegrambot"
+)
+
+func main() {
+    // Create a new bot
+    bot, err := gotelegrambot.New(os.Getenv("TELEGRAM_BOT_TOKEN"))
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Send a message
+    ctx := context.Background()
+    _, err = bot.SendMessage(ctx, chatID, "Hello, World!")
+    if err != nil {
+        log.Fatal(err)
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Features -->
+                <section id="features">
+                    <h3 class="text-2xl font-semibold text-gray-900">Features</h3>
+                    <ul class="mt-4 space-y-2 list-disc list-inside text-gray-700">
+                        <li>Complete Telegram Bot API implementation</li>
+                        <li>Support for both polling and webhook methods</li>
+                        <li>Context-based API for proper cancellation</li>
+                        <li>Error handling with retry mechanisms</li>
+                        <li>Type-safe interfaces</li>
+                        <li>Fluent builder-style API</li>
+                    </ul>
+                </section>
+
+                <!-- Message Sending -->
+                <section id="sending-messages">
+                    <h3 class="text-2xl font-semibold text-gray-900">Sending Messages</h3>
+                    <div class="mt-4 bg-gray-800 rounded-lg p-4">
+                        <pre><code class="language-go">// Basic text message
+_, err := bot.SendMessage(ctx, chatID, "Hello, world!")
+
+// With Markdown formatting
+_, err := bot.SendMessage(ctx, chatID, "Hello, *world*!",
+    gotelegrambot.WithParseMode("Markdown"))
+
+// With HTML formatting
+_, err := bot.SendMessage(ctx, chatID, "&lt;b>Hello&lt;/b>, world!",
+    gotelegrambot.WithParseMode("HTML"))</code></pre>
+                    </div>
+                </section>
+
+                <!-- Media Messages -->
+                <section id="media-messages">
+                    <h3 class="text-2xl font-semibold text-gray-900">Media Messages</h3>
+                    <div class="mt-4 bg-gray-800 rounded-lg p-4">
+                        <pre><code class="language-go">// Send a photo
+_, err := bot.SendPhoto(ctx, chatID, "https://example.com/image.jpg",
+    gotelegrambot.WithCaption("Check out this photo!"))
+
+// Send a document
+_, err := bot.SendDocument(ctx, chatID, "/path/to/file.pdf")</code></pre>
+                    </div>
+                </section>
+
+                <!-- Keyboards -->
+                <section id="keyboards">
+                    <h3 class="text-2xl font-semibold text-gray-900">Keyboards</h3>
+                    <div class="mt-4 bg-gray-800 rounded-lg p-4">
+                        <pre><code class="language-go">// Inline keyboard
+markup := gotelegrambot.NewInlineKeyboardMarkup(
+    gotelegrambot.NewInlineKeyboardButtonRow(
+        gotelegrambot.NewInlineKeyboardButtonURL("Visit Website", "https://example.com"),
+        gotelegrambot.NewInlineKeyboardButtonCallback("Click Me", "callback_data"),
+    ),
+)
+
+_, err := bot.SendMessage(ctx, chatID, "Choose an option:",
+    gotelegrambot.WithReplyMarkup(markup))</code></pre>
+                    </div>
+                </section>
+
+                <!-- Error Handling -->
+                <section id="error-handling">
+                    <h3 class="text-2xl font-semibold text-gray-900">Error Handling</h3>
+                    <div class="mt-4 bg-gray-800 rounded-lg p-4">
+                        <pre><code class="language-go">_, err := bot.SendMessage(ctx, chatID, "Hello")
+if err != nil {
+    var apiErr *gotelegrambot.Error
+    if errors.As(err, &apiErr) {
+        log.Printf("API Error %d: %s", apiErr.Code, apiErr.Message)
+        
+        // Check if we need to retry
+        if gotelegrambot.RetryableError(err) {
+            // Handle retry logic
+        }
+    } else {
+        log.Printf("Other error: %v", err)
+    }
+}</code></pre>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white mt-12">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-500">Licensed under MIT License</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
+</body>
+</html>
