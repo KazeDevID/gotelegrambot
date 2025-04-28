@@ -163,7 +163,7 @@ if err != nil {
 
 ## Documentation
 
-For full documentation and examples, see the [Go package documentation](https://pkg.go.dev/github.com/KazeDevID/gotelegrambot).
+For full documentation and examples, see the [Go package documentation](https://kazedevid.github.io/gotelegrambot/).
 
 ## Contributing
 
