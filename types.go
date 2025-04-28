@@ -1,40 +1,129 @@
 package gotelegrambot
 
-import (
-	"encoding/json"
-	"time"
-)
-
-// Update represents a Telegram update.
-type Update struct {
-	UpdateID           int                 `json:"update_id"`
-	Message            *Message            `json:"message,omitempty"`
-	EditedMessage      *Message            `json:"edited_message,omitempty"`
-	ChannelPost        *Message            `json:"channel_post,omitempty"`
-	EditedChannelPost  *Message            `json:"edited_channel_post,omitempty"`
-	InlineQuery        *InlineQuery        `json:"inline_query,omitempty"`
-	ChosenInlineResult *ChosenInlineResult `json:"chosen_inline_result,omitempty"`
-	CallbackQuery      *CallbackQuery      `json:"callback_query,omitempty"`
-	Poll               *Poll               `json:"poll,omitempty"`
-	PollAnswer         *PollAnswer         `json:"poll_answer,omitempty"`
-	MyChatMember       *ChatMemberUpdated  `json:"my_chat_member,omitempty"`
-	ChatMember         *ChatMemberUpdated  `json:"chat_member,omitempty"`
-	ChatJoinRequest    *ChatJoinRequest    `json:"chat_join_request,omitempty"`
+// ChatPhoto represents a chat photo.
+type ChatPhoto struct {
+	SmallFileID       string `json:"small_file_id"`
+	SmallFileUniqueID string `json:"small_file_unique_id"`
+	BigFileID         string `json:"big_file_id"`
+	BigFileUniqueID   string `json:"big_file_unique_id"`
 }
 
-// User represents a Telegram user or bot.
-type User struct {
-	ID                      int64  `json:"id"`
-	IsBot                   bool   `json:"is_bot"`
-	FirstName               string `json:"first_name"`
-	LastName                string `json:"last_name,omitempty"`
-	Username                string `json:"username,omitempty"`
-	LanguageCode            string `json:"language_code,omitempty"`
-	IsPremium               bool   `json:"is_premium,omitempty"`
-	AddedToAttachmentMenu   bool   `json:"added_to_attachment_menu,omitempty"`
-	CanJoinGroups           bool   `json:"can_join_groups,omitempty"`
-	CanReadAllGroupMessages bool   `json:"can_read_all_group_messages,omitempty"`
-	SupportsInlineQueries   bool   `json:"supports_inline_queries,omitempty"`
+// PhotoSize represents one size of a photo or a file/sticker thumbnail.
+type PhotoSize struct {
+	FileID       string `json:"file_id"`
+	FileUniqueID string `json:"file_unique_id"`
+	Width        int    `json:"width"`
+	Height       int    `json:"height"`
+	FileSize     int    `json:"file_size,omitempty"`
+}
+
+// Animation represents an animation file.
+type Animation struct {
+	FileID       string     `json:"file_id"`
+	FileUniqueID string     `json:"file_unique_id"`
+	Width        int        `json:"width"`
+	Height       int        `json:"height"`
+	Duration     int        `json:"duration"`
+	Thumbnail    *PhotoSize `json:"thumbnail,omitempty"`
+	FileName     string     `json:"file_name,omitempty"`
+	MimeType     string     `json:"mime_type,omitempty"`
+	FileSize     int        `json:"file_size,omitempty"`
+}
+
+// Audio represents an audio file.
+type Audio struct {
+	FileID       string     `json:"file_id"`
+	FileUniqueID string     `json:"file_unique_id"`
+	Duration     int        `json:"duration"`
+	Performer    string     `json:"performer,omitempty"`
+	Title        string     `json:"title,omitempty"`
+	FileName     string     `json:"file_name,omitempty"`
+	MimeType     string     `json:"mime_type,omitempty"`
+	FileSize     int        `json:"file_size,omitempty"`
+	Thumbnail    *PhotoSize `json:"thumbnail,omitempty"`
+}
+
+// Document represents a general file.
+type Document struct {
+	FileID       string     `json:"file_id"`
+	FileUniqueID string     `json:"file_unique_id"`
+	Thumbnail    *PhotoSize `json:"thumbnail,omitempty"`
+	FileName     string     `json:"file_name,omitempty"`
+	MimeType     string     `json:"mime_type,omitempty"`
+	FileSize     int        `json:"file_size,omitempty"`
+}
+
+// Video represents a video file.
+type Video struct {
+	FileID       string     `json:"file_id"`
+	FileUniqueID string     `json:"file_unique_id"`
+	Width        int        `json:"width"`
+	Height       int        `json:"height"`
+	Duration     int        `json:"duration"`
+	Thumbnail    *PhotoSize `json:"thumbnail,omitempty"`
+	FileName     string     `json:"file_name,omitempty"`
+	MimeType     string     `json:"mime_type,omitempty"`
+	FileSize     int        `json:"file_size,omitempty"`
+}
+
+// VideoNote represents a video message.
+type VideoNote struct {
+	FileID       string     `json:"file_id"`
+	FileUniqueID string     `json:"file_unique_id"`
+	Length       int        `json:"length"`
+	Duration     int        `json:"duration"`
+	Thumbnail    *PhotoSize `json:"thumbnail,omitempty"`
+	FileSize     int        `json:"file_size,omitempty"`
+}
+
+// Voice represents a voice note.
+type Voice struct {
+	FileID       string `json:"file_id"`
+	FileUniqueID string `json:"file_unique_id"`
+	Duration     int    `json:"duration"`
+	MimeType     string `json:"mime_type,omitempty"`
+	FileSize     int    `json:"file_size,omitempty"`
+}
+
+// Contact represents a phone contact.
+type Contact struct {
+	PhoneNumber string `json:"phone_number"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name,omitempty"`
+	UserID      int64  `json:"user_id,omitempty"`
+	VCard       string `json:"vcard,omitempty"`
+}
+
+// Location represents a point on the map.
+type Location struct {
+	Longitude            float64 `json:"longitude"`
+	Latitude             float64 `json:"latitude"`
+	HorizontalAccuracy   float64 `json:"horizontal_accuracy,omitempty"`
+	LivePeriod           int     `json:"live_period,omitempty"`
+	Heading              int     `json:"heading,omitempty"`
+	ProximityAlertRadius int     `json:"proximity_alert_radius,omitempty"`
+}
+
+// Venue represents a venue.
+type Venue struct {
+	Location        Location `json:"location"`
+	Title           string   `json:"title"`
+	Address         string   `json:"address"`
+	FoursquareID    string   `json:"foursquare_id,omitempty"`
+	FoursquareType  string   `json:"foursquare_type,omitempty"`
+	GooglePlaceID   string   `json:"google_place_id,omitempty"`
+	GooglePlaceType string   `json:"google_place_type,omitempty"`
+}
+
+// MessageEntity represents one special entity in a text message.
+type MessageEntity struct {
+	Type          string `json:"type"`
+	Offset        int    `json:"offset"`
+	Length        int    `json:"length"`
+	URL           string `json:"url,omitempty"`
+	User          *User  `json:"user,omitempty"`
+	Language      string `json:"language,omitempty"`
+	CustomEmojiID string `json:"custom_emoji_id,omitempty"`
 }
 
 // ChatPermissions describes actions that a non-administrator user is allowed to take in a chat.
@@ -55,49 +144,19 @@ type ChatLocation struct {
 	Address  string    `json:"address"`
 }
 
-// Chat represents a chat.
-type Chat struct {
-	ID                    int64       `json:"id"`
-	Type                  string      `json:"type"`
-	Title                 string      `json:"title,omitempty"`
-	Username              string      `json:"username,omitempty"`
-	FirstName             string      `json:"first_name,omitempty"`
-	LastName              string      `json:"last_name,omitempty"`
-	IsForum               bool        `json:"is_forum,omitempty"`
-	Photo                 *ChatPhoto  `json:"photo,omitempty"`
-	ActiveUsernames       []string    `json:"active_usernames,omitempty"`
-	EmojiStatusCustomEmojiID string   `json:"emoji_status_custom_emoji_id,omitempty"`
-	Bio                   string      `json:"bio,omitempty"`
-	HasPrivateForwards    bool        `json:"has_private_forwards,omitempty"`
-	HasRestrictedVoiceAndVideoMessages bool `json:"has_restricted_voice_and_video_messages,omitempty"`
-	JoinToSendMessages    bool        `json:"join_to_send_messages,omitempty"`
-	JoinByRequest         bool        `json:"join_by_request,omitempty"`
-	Description           string      `json:"description,omitempty"`
-	InviteLink            string      `json:"invite_link,omitempty"`
-	PinnedMessage         *Message    `json:"pinned_message,omitempty"`
-	Permissions           *ChatPermissions `json:"permissions,omitempty"`
-	SlowModeDelay         int         `json:"slow_mode_delay,omitempty"`
-	MessageAutoDeleteTime int         `json:"message_auto_delete_time,omitempty"`
-	HasProtectedContent   bool        `json:"has_protected_content,omitempty"`
-	StickerSetName        string      `json:"sticker_set_name,omitempty"`
-	CanSetStickerSet      bool        `json:"can_set_sticker_set,omitempty"`
-	LinkedChatID          int64       `json:"linked_chat_id,omitempty"`
-	Location              *ChatLocation `json:"location,omitempty"`
-}
-
 // Sticker represents a sticker.
 type Sticker struct {
-	FileID       string        `json:"file_id"`
-	FileUniqueID string        `json:"file_unique_id"`
-	Type         string        `json:"type"`
-	Width        int           `json:"width"`
-	Height       int           `json:"height"`
-	IsAnimated   bool          `json:"is_animated"`
-	IsVideo      bool          `json:"is_video"`
-	Thumbnail    *PhotoSize    `json:"thumbnail,omitempty"`
-	Emoji        string        `json:"emoji,omitempty"`
-	SetName      string        `json:"set_name,omitempty"`
-	FileSize     int           `json:"file_size,omitempty"`
+	FileID       string     `json:"file_id"`
+	FileUniqueID string     `json:"file_unique_id"`
+	Type         string     `json:"type"`
+	Width        int        `json:"width"`
+	Height       int        `json:"height"`
+	IsAnimated   bool       `json:"is_animated"`
+	IsVideo      bool       `json:"is_video"`
+	Thumbnail    *PhotoSize `json:"thumbnail,omitempty"`
+	Emoji        string     `json:"emoji,omitempty"`
+	SetName      string     `json:"set_name,omitempty"`
+	FileSize     int        `json:"file_size,omitempty"`
 }
 
 // Dice represents an animated emoji that displays a random value.
@@ -127,36 +186,7 @@ type PassportData struct {
 	Credentials EncryptedCredentials       `json:"credentials"`
 }
 
-// EncryptedPassportElement contains information about documents or other Telegram Passport elements shared with the bot.
-type EncryptedPassportElement struct {
-	Type        string         `json:"type"`
-	Data        string         `json:"data,omitempty"`
-	PhoneNumber string         `json:"phone_number,omitempty"`
-	Email       string         `json:"email,omitempty"`
-	Files       []PassportFile `json:"files,omitempty"`
-	FrontSide   *PassportFile  `json:"front_side,omitempty"`
-	ReverseSide *PassportFile  `json:"reverse_side,omitempty"`
-	Selfie      *PassportFile  `json:"selfie,omitempty"`
-	Translation []PassportFile `json:"translation,omitempty"`
-	Hash        string         `json:"hash"`
-}
-
-// PassportFile represents a file uploaded to Telegram Passport.
-type PassportFile struct {
-	FileID       string `json:"file_id"`
-	FileUniqueID string `json:"file_unique_id"`
-	FileSize     int    `json:"file_size"`
-	FileDate     int    `json:"file_date"`
-}
-
-// EncryptedCredentials contains data required for decrypting and authenticating PassportData.
-type EncryptedCredentials struct {
-	Data   string `json:"data"`
-	Hash   string `json:"hash"`
-	Secret string `json:"secret"`
-}
-
-// ProximityAlertTriggered represents a service message about a user in the chat triggering a proximity alert set by another user.
+// ProximityAlertTriggered represents a service message about a user in the chat triggering a proximity alert.
 type ProximityAlertTriggered struct {
 	Traveler *User `json:"traveler"`
 	Watcher  *User `json:"watcher"`
